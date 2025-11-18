@@ -12,9 +12,8 @@ st.write("Enter a customer support question to see how the AI categorizes it.")
 @st.cache_resource
 def load_model():
     try:
-        # Use explicit local path
         model = AutoModelForSequenceClassification.from_pretrained("./")
-        tokenizer = AutoTokenizer.from_pretrained("./")
+        tokenizer = AutoTokenizer.from_pretrained(".")
         with open("label_map.json", "r") as f:
             label_map = json.load(f)
         reverse_label_map = {v: k for k, v in label_map.items()}
@@ -22,10 +21,6 @@ def load_model():
         return model, tokenizer, reverse_label_map
     except Exception as e:
         st.error(f"❌ Model loading failed: {e}")
-        # List files to debug
-        import os
-        files = os.listdir(".")
-        st.write("Files in directory:", files)
         return None, None, {}
 
 model, tokenizer, reverse_label_map = load_model()
